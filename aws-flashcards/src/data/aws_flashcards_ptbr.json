@@ -1,0 +1,218 @@
+[
+  {
+    "question": "Qual serviço da AWS é usado para armazenar objetos em buckets, oferecendo durabilidade de 99,999999999% (11 noves)?",
+    "answer": "Amazon Simple Storage Service (Amazon S3)"
+  },
+  {
+    "question": "Qual serviço gerenciado da AWS permite executar código sem provisionar ou gerenciar servidores?",
+    "answer": "AWS Lambda"
+  },
+  {
+    "question": "Que serviço da AWS fornece banco de dados relacional gerenciado com suporte a engines como MySQL, PostgreSQL e Oracle?",
+    "answer": "Amazon Relational Database Service (Amazon RDS)"
+  },
+  {
+    "question": "Qual componente do Amazon EC2 é responsável por definir recursos de hardware virtual, como CPU, memória e rede?",
+    "answer": "Tipo de instância EC2 (Instance Type)"
+  },
+  {
+    "question": "Qual serviço de balanceamento de carga opera nas camadas 4 e 7 e distribui tráfego para múltiplas instâncias EC2?",
+    "answer": "Elastic Load Balancing (ELB)"
+  },
+  {
+    "question": "Qual serviço é recomendando para distribuição global de conteúdo estático com baixa latência?",
+    "answer": "Amazon CloudFront"
+  },
+  {
+    "question": "Como se chama o recurso da AWS que permite definir uma rede virtual isolada dentro da Nuvem AWS?",
+    "answer": "Amazon Virtual Private Cloud (VPC)"
+  },
+  {
+    "question": "Qual recurso do Amazon S3 pode ser habilitado para bloquear a exclusão acidental de objetos?",
+    "answer": "Versionamento (Versioning)"
+  },
+  {
+    "question": "Qual serviço da AWS oferece mensageria desacoplada, escalável e baseada em filas?",
+    "answer": "Amazon Simple Queue Service (Amazon SQS)"
+  },
+  {
+    "question": "Qual serviço é usado para enviar notificações push, SMS e email de forma pub/sub?",
+    "answer": "Amazon Simple Notification Service (Amazon SNS)"
+  },
+  {
+    "question": "Que serviço da AWS fornece análise em tempo real e processamento de grandes volumes de dados de streaming?",
+    "answer": "Amazon Kinesis"
+  },
+  {
+    "question": "Qual modelo de precificação de instâncias EC2 oferece os menores preços, porém pode ser interrompido quando a capacidade é necessária?",
+    "answer": "Instâncias Spot"
+  },
+  {
+    "question": "Qual serviço AWS facilita a migração de bases de dados para a AWS com downtime mínimo?",
+    "answer": "AWS Database Migration Service (AWS DMS)"
+  },
+  {
+    "question": "Que serviço AWS permite monitorar métricas e configurar alarmes para recursos?",
+    "answer": "Amazon CloudWatch"
+  },
+  {
+    "question": "Onde você pode revisar eventos de API para auditoria e conformidade na AWS?",
+    "answer": "AWS CloudTrail"
+  },
+  {
+    "question": "Qual serviço de segurança gerenciado detecta comportamento anômalo de conta e chamada de API?",
+    "answer": "Amazon GuardDuty"
+  },
+  {
+    "question": "Qual é o serviço de IAM que facilita o gerenciamento de permissões temporárias para usuários externos?",
+    "answer": "AWS Security Token Service (STS) - AssumeRole"
+  },
+  {
+    "question": "O que é AWS Organizations?",
+    "answer": "Serviço que permite gerenciar múltiplas contas AWS de forma centralizada, aplicar políticas e consolidar faturamento."
+  },
+  {
+    "question": "Qual opção de suporte AWS oferece tempo de resposta de menos de 15 minutos para casos críticos de produção?",
+    "answer": "Plano Enterprise"
+  },
+  {
+    "question": "Qual benefício do modelo de nuvem AWS corresponde ao conceito de 'pagar apenas pelo que usar'?",
+    "answer": "Pagamento sob demanda (Pay-as-you-go)"
+  },
+  {
+    "question": "Qual ferramenta AWS ajuda a estimar custos projetados e comparar arquiteturas?",
+    "answer": "AWS Pricing Calculator"
+  },
+  {
+    "question": "Que tipo de instância EC2 deve ser escolhida para cargas de trabalho sensíveis a custos, porém tolerantes a interrupções?",
+    "answer": "Instâncias Spot"
+  },
+  {
+    "question": "Qual serviço gerenciado fornece cluster Kubernetes pronto para uso na AWS?",
+    "answer": "Amazon Elastic Kubernetes Service (Amazon EKS)"
+  },
+  {
+    "question": "Qual serviço oferece armazenamento de arquivos compartilhado via protocolo NFS ou SMB?",
+    "answer": "Amazon Elastic File System (Amazon EFS)"
+  },
+  {
+    "question": "Qual serviço da AWS é projetado para arquivamento de dados a longo prazo com baixo custo?",
+    "answer": "Amazon S3 Glacier / S3 Glacier Deep Archive"
+  },
+  {
+    "question": "Qual ferramenta automatiza provisão de infraestrutura como código na AWS usando templates em YAML ou JSON?",
+    "answer": "AWS CloudFormation"
+  },
+  {
+    "question": "O que é o modelo de responsabilidade compartilhada da AWS?",
+    "answer": "AWS é responsável pela 'Segurança da Nuvem' (hardware, software, rede, instalações) e o cliente pela 'Segurança na Nuvem' (configurações, dados, controle de acesso)."
+  },
+  {
+    "question": "Qual é o principal serviço de banco de dados NoSQL da AWS?",
+    "answer": "Amazon DynamoDB"
+  },
+  {
+    "question": "Qual recurso de custo reduzido do Amazon S3 move objetos automaticamente entre classes de armazenamento?",
+    "answer": "S3 Lifecycle Rules (Regras de ciclo de vida)"
+  },
+  {
+    "question": "Qual serviço é usado para hospedar código-fonte privado e pipelines CI/CD na AWS?",
+    "answer": "AWS CodeCommit (repositório) e AWS CodePipeline (orquestração)"
+  },
+  {
+    "question": "Qual serviço de computação serverless gerencia contêineres sem provisionar servidores?",
+    "answer": "AWS Fargate"
+  },
+  {
+    "question": "Que serviço ajuda a otimizar custos de infraestrutura analisando padrões de uso e recomendando instâncias apropriadas?",
+    "answer": "AWS Cost Explorer / AWS Compute Optimizer"
+  },
+  {
+    "question": "Qual serviço AWS permite proteger aplicativos web contra ataques comuns como SQL injection e XSS?",
+    "answer": "AWS Web Application Firewall (AWS WAF)"
+  },
+  {
+    "question": "Qual ferramenta AWS fornece relatórios detalhados de uso e pagamentos consolidados mensalmente?",
+    "answer": "AWS Cost and Usage Report (CUR)"
+  },
+  {
+    "question": "Que serviço de cache em memória gerenciado suporta Redis e Memcached?",
+    "answer": "Amazon ElastiCache"
+  },
+  {
+    "question": "Qual solução de banco de dados da AWS é otimizada para analytics de petabytes usando SQL?",
+    "answer": "Amazon Redshift"
+  },
+  {
+    "question": "Onde você pode habilitar Multi-Factor Authentication (MFA) para contas root e IAM?",
+    "answer": "No console do AWS IAM, através de dispositivo virtual ou hardware."
+  },
+  {
+    "question": "Qual recurso da VPC permite segmentar rede em sub-redes públicas e privadas?",
+    "answer": "Subnets com tabelas de roteamento distintas e gateways apropriados (IGW/NAT)"
+  },
+  {
+    "question": "Qual serviço AWS facilita entrega de emails em massa e transacionais?",
+    "answer": "Amazon Simple Email Service (Amazon SES)"
+  },
+  {
+    "question": "Que serviço provê ambiente de execução gerenciado para aplicações web e escala automática mediante upload de código?",
+    "answer": "AWS Elastic Beanstalk"
+  },
+  {
+    "question": "Qual funcionalidade do Amazon S3 ajuda a bloquear deleção permanente por um período, útil para compliance?",
+    "answer": "S3 Object Lock (WORM)"
+  },
+  {
+    "question": "Qual é a forma recomendada de conceder acesso programático temporário a recursos AWS para aplicações móveis?",
+    "answer": "Usar AWS Cognito para autenticação e STS para tokens temporários"
+  },
+  {
+    "question": "Qual serviço analisa configurações de recursos para compliance com boas práticas da AWS?",
+    "answer": "AWS Config"
+  },
+  {
+    "question": "Que tipo de instância EC2 garante capacidade reservada com desconto em troca de compromisso de 1 ou 3 anos?",
+    "answer": "Instâncias Reservadas (Reserved Instances)"
+  },
+  {
+    "question": "Qual serviço da AWS permite criar redes privadas dedicadas que conectam seu data center à AWS?",
+    "answer": "AWS Direct Connect"
+  },
+  {
+    "question": "Em qual zona de disponibilidade (AZ) dentro de uma região os dados do Amazon S3 são armazenados?",
+    "answer": "Amazon S3 automaticamente replica dados em múltiplas AZs na região, não há seleção manual de AZ."
+  },
+  {
+    "question": "Qual solução AWS fornece CDN global com mais de 400 pontos de presença?",
+    "answer": "Amazon CloudFront"
+  },
+  {
+    "question": "Que serviço AWS oferece relatórios de recomendação de segurança com priorização de vulnerabilidades em instâncias EC2?",
+    "answer": "Amazon Inspector"
+  },
+  {
+    "question": "Qual ferramenta gráfica no console ajuda a arquitetar visualmente soluções AWS?",
+    "answer": "AWS Architecture Diagram Tool (no console) ou AWS Solutions Architectures"
+  },
+  {
+    "question": "Qual serviço de DNS gerenciado altamente disponível da AWS?",
+    "answer": "Amazon Route 53"
+  },
+  {
+    "question": "O que é um AWS Availability Zone?",
+    "answer": "Um ou mais data centers discretos dentro de uma região, com alimentação, rede e conectividade redundantes."
+  },
+  {
+    "question": "Qual recurso AWS ajuda a criptografar dados em repouso em discos EBS?",
+    "answer": "Criptografia EBS integrada usando KMS (AWS Key Management Service)"
+  },
+  {
+    "question": "Qual serviço permite criar chaves gerenciadas e controle sobre criptografia na AWS?",
+    "answer": "AWS Key Management Service (AWS KMS)"
+  },
+  {
+    "question": "Qual prática de segurança é recomendada para a conta root da AWS?",
+    "answer": "Habilitar MFA, usar apenas para tarefas essenciais, e criar usuários IAM para uso diário."
+  }
+]
