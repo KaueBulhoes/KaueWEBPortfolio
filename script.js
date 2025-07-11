@@ -1,297 +1,416 @@
-// Mobile Navigation
+// Estado da aplicação
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let correctAnswers = [];
+let incorrectAnswers = [];
+let isReviewMode = false;
+let touchStartX = 0;
+let touchStartY = 0;
+let isDragging = false;
+
+// Elementos DOM
+const flashcard = document.getElementById('flashcard');
+const questionElement = document.getElementById('question');
+const optionsElement = document.getElementById('options');
+const optionsSection = document.getElementById('optionsSection');
+const answerSection = document.getElementById('answerSection');
+const correctAnswerElement = document.getElementById('correctAnswer');
+const explanationElement = document.getElementById('explanation');
+const showAnswerBtn = document.getElementById('showAnswerBtn');
+const swipeActions = document.getElementById('swipeActions');
+const correctBtn = document.getElementById('correctBtn');
+const incorrectBtn = document.getElementById('incorrectBtn');
+const currentCardElement = document.getElementById('currentCard');
+const totalCardsElement = document.getElementById('totalCards');
+const correctCountElement = document.getElementById('correctCount');
+const incorrectCountElement = document.getElementById('incorrectCount');
+const completionScreen = document.getElementById('completionScreen');
+const finalCorrectElement = document.getElementById('finalCorrect');
+const finalIncorrectElement = document.getElementById('finalIncorrect');
+const reviewIncorrectBtn = document.getElementById('reviewIncorrectBtn');
+const restartBtn = document.getElementById('restartBtn');
+const resetBtn = document.getElementById('resetBtn');
+const reviewBtn = document.getElementById('reviewBtn');
+const swipeIndicators = document.querySelectorAll('.swipe-indicator');
+
+// Inicializar aplicação
 document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-        });
-
-        // Close menu when clicking on a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-            });
-        });
-    }
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Load GitHub projects
-    loadGitHubProjects();
-
-    // Language card animations
-    const languageCards = document.querySelectorAll('.language-card');
-    languageCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
+    initializeApp();
+    setupEventListeners();
 });
 
-// GitHub API Integration
-async function loadGitHubProjects() {
-    const projectsContainer = document.getElementById('projectsContainer');
-    const projectNames = ['Angular_ToDoList', 'books-ecommerce-SantanderCoders2023.2-Modulo5', 'efood2'];
+function initializeApp() {
+    currentQuestions = shuffleQuestions(questions);
+    currentQuestionIndex = 0;
+    correctAnswers = [];
+    incorrectAnswers = [];
+    isReviewMode = false;
     
-    try {
-        // Clear loading state
-        projectsContainer.innerHTML = '';
-        
-        // Show loading for each project
-        projectsContainer.innerHTML = `
-            <div class="loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Loading projects from GitHub...</p>
-            </div>
-        `;
+    updateStats();
+    loadCurrentQuestion();
+    showMainContent();
+}
 
-        const projects = [];
-        
-        // Since we don't have the GitHub username, we'll create demo projects based on the names
-        // In a real scenario, you would replace 'your-username' with the actual GitHub username
-        // and make actual API calls to https://api.github.com/repos/your-username/repo-name
-        
-        const demoProjects = [
-            {
-                name: 'Angular_ToDoList',
-                description: 'A comprehensive todo list application built with Angular featuring task management, categories, due dates, and local storage persistence.',
-                language: 'TypeScript',
-                stars: 15,
-                forks: 5,
-                html_url: 'https://github.com/your-username/Angular_ToDoList',
-                homepage: 'https://your-username.github.io/Angular_ToDoList',
-                topics: ['angular', 'typescript', 'todo-app', 'frontend']
-            },
-            {
-                name: 'books-ecommerce-SantanderCoders2023.2-Modulo5',
-                description: 'E-commerce platform for books developed as part of Santander Coders 2023.2 Module 5. Features shopping cart, payment integration, and book catalog management.',
-                language: 'JavaScript',
-                stars: 23,
-                forks: 8,
-                html_url: 'https://github.com/your-username/books-ecommerce-SantanderCoders2023.2-Modulo5',
-                homepage: 'https://your-books-ecommerce.netlify.app',
-                topics: ['ecommerce', 'javascript', 'react', 'books', 'shopping-cart']
-            },
-            {
-                name: 'efood2',
-                description: 'Modern food delivery application with real-time order tracking, restaurant management, and payment processing. Built with React and Node.js.',
-                language: 'JavaScript',
-                stars: 31,
-                forks: 12,
-                html_url: 'https://github.com/your-username/efood2',
-                homepage: 'https://efood2-app.vercel.app',
-                topics: ['food-delivery', 'react', 'nodejs', 'realtime', 'payment']
-            }
-        ];
+function setupEventListeners() {
+    // Botões principais
+    showAnswerBtn.addEventListener('click', showAnswer);
+    correctBtn.addEventListener('click', () => handleAnswer(true));
+    incorrectBtn.addEventListener('click', () => handleAnswer(false));
+    resetBtn.addEventListener('click', resetAll);
+    reviewBtn.addEventListener('click', startReviewMode);
+    reviewIncorrectBtn.addEventListener('click', startReviewMode);
+    restartBtn.addEventListener('click', resetAll);
 
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        projectsContainer.innerHTML = '';
-        
-        demoProjects.forEach(project => {
-            const projectCard = createProjectCard(project);
-            projectsContainer.appendChild(projectCard);
+    // Touch/Mouse events para swipe
+    flashcard.addEventListener('touchstart', handleTouchStart, { passive: true });
+    flashcard.addEventListener('touchmove', handleTouchMove, { passive: false });
+    flashcard.addEventListener('touchend', handleTouchEnd, { passive: true });
+    flashcard.addEventListener('mousedown', handleMouseStart);
+    flashcard.addEventListener('mousemove', handleMouseMove);
+    flashcard.addEventListener('mouseup', handleMouseEnd);
+    flashcard.addEventListener('mouseleave', handleMouseEnd);
+
+    // Opções clicáveis
+    optionsElement.addEventListener('click', handleOptionClick);
+
+    // Prevenção de drag padrão
+    flashcard.addEventListener('dragstart', e => e.preventDefault());
+}
+
+function loadCurrentQuestion() {
+    if (currentQuestionIndex >= currentQuestions.length) {
+        showCompletionScreen();
+        return;
+    }
+
+    const question = currentQuestions[currentQuestionIndex];
+    
+    // Reset do estado visual
+    resetCardVisuals();
+    
+    // Carregar pergunta
+    questionElement.textContent = question.question;
+    
+    // Carregar opções
+    optionsElement.innerHTML = '';
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.textContent = `${String.fromCharCode(65 + index)}) ${option}`;
+        optionElement.dataset.index = index;
+        optionsElement.appendChild(optionElement);
+    });
+
+    // Preparar resposta
+    const correctOption = question.options[question.correct];
+    correctAnswerElement.textContent = `${String.fromCharCode(65 + question.correct)}) ${correctOption}`;
+    explanationElement.innerHTML = `<h4>Explicação:</h4><p>${question.explanation}</p>`;
+
+    updateStats();
+}
+
+function handleOptionClick(e) {
+    if (e.target.classList.contains('option')) {
+        // Remove seleção anterior
+        optionsElement.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
         });
-
-        // Add animation to project cards
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                card.style.transition = 'all 0.5s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 200);
-        });
-
-    } catch (error) {
-        console.error('Error loading projects:', error);
-        projectsContainer.innerHTML = `
-            <div class="loading">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Error loading projects. Please try again later.</p>
-            </div>
-        `;
+        
+        // Adiciona seleção atual
+        e.target.classList.add('selected');
     }
 }
 
-function createProjectCard(project) {
-    const projectCard = document.createElement('div');
-    projectCard.className = 'project-card';
+function showAnswer() {
+    const question = currentQuestions[currentQuestionIndex];
     
-    const languageColor = getLanguageColor(project.language);
-    const topics = project.topics ? project.topics.slice(0, 3) : [];
-    
-    projectCard.innerHTML = `
-        <div class="project-header">
-            <h3 class="project-title">${project.name.replace(/-/g, ' ').replace(/_/g, ' ')}</h3>
-            <p class="project-description">${project.description || 'No description available.'}</p>
-        </div>
-        <div class="project-body">
-            <div class="project-language" style="background-color: ${languageColor};">
-                ${project.language || 'Unknown'}
-            </div>
-            <div class="project-stats">
-                <div class="project-stat">
-                    <i class="fas fa-star"></i>
-                    <span>${project.stars || 0}</span>
-                </div>
-                <div class="project-stat">
-                    <i class="fas fa-code-branch"></i>
-                    <span>${project.forks || 0}</span>
-                </div>
-                <div class="project-stat">
-                    <i class="fas fa-code"></i>
-                    <span>${project.language || 'Unknown'}</span>
-                </div>
-            </div>
-            ${topics.length > 0 ? `
-                <div class="project-topics">
-                    ${topics.map(topic => `<span class="project-topic">#${topic}</span>`).join('')}
-                </div>
-            ` : ''}
-            <div class="project-links">
-                <a href="${project.html_url}" target="_blank" rel="noopener" class="project-link">
-                    <i class="fab fa-github"></i>
-                    View Code
-                </a>
-                ${project.homepage ? `
-                    <a href="${project.homepage}" target="_blank" rel="noopener" class="project-link">
-                        <i class="fas fa-external-link-alt"></i>
-                        Live Demo
-                    </a>
-                ` : ''}
-            </div>
-        </div>
-    `;
-    
-    return projectCard;
-}
-
-function getLanguageColor(language) {
-    const colors = {
-        'JavaScript': '#f7df1e',
-        'TypeScript': '#3178c6',
-        'Python': '#3776ab',
-        'Java': '#007396',
-        'React': '#61dafb',
-        'Angular': '#dd0031',
-        'Vue': '#4fc08d',
-        'CSS': '#1572b6',
-        'HTML': '#e34f26',
-        'Node.js': '#339933'
-    };
-    return colors[language] || '#6366f1';
-}
-
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 30px rgba(0, 0, 0, 0.15)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    }
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+    // Mostrar resposta correta nas opções
+    optionsElement.querySelectorAll('.option').forEach((opt, index) => {
+        if (index === question.correct) {
+            opt.classList.add('correct');
+        } else if (opt.classList.contains('selected')) {
+            opt.classList.add('incorrect');
         }
     });
-}, observerOptions);
 
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', function() {
-    const animateElements = document.querySelectorAll('.language-card, .stat, .about-text');
-    animateElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s ease';
-        observer.observe(el);
+    // Mostrar seção de resposta
+    answerSection.style.display = 'block';
+    showAnswerBtn.style.display = 'none';
+    swipeActions.style.display = 'flex';
+}
+
+function handleAnswer(isCorrect) {
+    const question = currentQuestions[currentQuestionIndex];
+    
+    if (isCorrect) {
+        correctAnswers.push(question);
+        showToast('Correto! 👍', 'correct');
+        animateSwipe('right');
+    } else {
+        incorrectAnswers.push(question);
+        showToast('Marcado para revisão 📝', 'incorrect');
+        animateSwipe('left');
+    }
+
+    setTimeout(() => {
+        nextQuestion();
+    }, 300);
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    loadCurrentQuestion();
+}
+
+function animateSwipe(direction) {
+    flashcard.classList.add(`swipe-${direction}`);
+    
+    // Mostrar indicador
+    const indicator = document.querySelector(`.swipe-indicator.${direction}`);
+    if (indicator) {
+        indicator.classList.add('show');
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 300);
+    }
+    
+    setTimeout(() => {
+        flashcard.classList.remove(`swipe-${direction}`);
+    }, 300);
+}
+
+function resetCardVisuals() {
+    answerSection.style.display = 'none';
+    showAnswerBtn.style.display = 'block';
+    swipeActions.style.display = 'none';
+    
+    // Reset opções
+    optionsElement.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
     });
-});
+    
+    // Reset transformações
+    flashcard.style.transform = '';
+    flashcard.classList.remove('dragging');
+}
 
-// Contact form handling (for contact page)
-function handleContactForm() {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Simulate form submission
-            setTimeout(() => {
-                alert('Thank you for your message! I\'ll get back to you soon.');
-                this.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
+function updateStats() {
+    currentCardElement.textContent = currentQuestionIndex + 1;
+    totalCardsElement.textContent = currentQuestions.length;
+    correctCountElement.textContent = correctAnswers.length;
+    incorrectCountElement.textContent = incorrectAnswers.length;
+    
+    // Mostrar botão de revisão se houver incorretas
+    if (incorrectAnswers.length > 0 && !isReviewMode) {
+        reviewBtn.style.display = 'block';
+    } else {
+        reviewBtn.style.display = 'none';
     }
 }
 
-// Initialize contact form if on contact page
-document.addEventListener('DOMContentLoaded', handleContactForm);
+function showCompletionScreen() {
+    document.querySelector('.flashcard-container').style.display = 'none';
+    completionScreen.style.display = 'block';
+    
+    finalCorrectElement.textContent = correctAnswers.length;
+    finalIncorrectElement.textContent = incorrectAnswers.length;
+    
+    // Mostrar botão de revisão apenas se houver incorretas
+    if (incorrectAnswers.length > 0) {
+        reviewIncorrectBtn.style.display = 'inline-flex';
+    } else {
+        reviewIncorrectBtn.style.display = 'none';
+    }
+}
 
-// Add CSS for project topics
-const style = document.createElement('style');
-style.textContent = `
-    .project-topics {
-        margin: 1rem 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+function showMainContent() {
+    document.querySelector('.flashcard-container').style.display = 'block';
+    completionScreen.style.display = 'none';
+}
+
+function startReviewMode() {
+    if (incorrectAnswers.length === 0) {
+        showToast('Não há questões para revisar! 🎉');
+        return;
     }
+
+    isReviewMode = true;
+    currentQuestions = [...incorrectAnswers];
+    currentQuestionIndex = 0;
+    incorrectAnswers = []; // Reset para nova rodada
     
-    .project-topic {
-        background: #e5e7eb;
-        color: #374151;
-        padding: 0.25rem 0.5rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
+    updateStats();
+    loadCurrentQuestion();
+    showMainContent();
     
-    .language-card:hover {
-        transform: translateY(-10px) scale(1.02) !important;
+    showToast(`Revisando ${currentQuestions.length} questões incorretas`, 'info');
+}
+
+function resetAll() {
+    if (confirm('Tem certeza que deseja resetar todos os cards e começar novamente?')) {
+        initializeApp();
+        showToast('Cards resetados! Boa sorte! 🍀');
     }
-`;
-document.head.appendChild(style);
+}
+
+// Funcionalidade de touch/swipe
+function handleTouchStart(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isDragging = true;
+    flashcard.classList.add('dragging');
+}
+
+function handleTouchMove(e) {
+    if (!isDragging) return;
+    
+    e.preventDefault();
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    const deltaX = touchX - touchStartX;
+    const deltaY = touchY - touchStartY;
+    
+    // Só processa se o movimento horizontal for maior que o vertical
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+        updateCardPosition(deltaX);
+        showSwipeIndicators(deltaX);
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    flashcard.classList.remove('dragging');
+    
+    const touchX = e.changedTouches[0].clientX;
+    const deltaX = touchX - touchStartX;
+    
+    handleSwipeEnd(deltaX);
+}
+
+function handleMouseStart(e) {
+    if (e.button !== 0) return; // Só botão esquerdo
+    
+    touchStartX = e.clientX;
+    touchStartY = e.clientY;
+    isDragging = true;
+    flashcard.classList.add('dragging');
+    
+    e.preventDefault();
+}
+
+function handleMouseMove(e) {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - touchStartX;
+    const deltaY = e.clientY - touchStartY;
+    
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+        updateCardPosition(deltaX);
+        showSwipeIndicators(deltaX);
+    }
+}
+
+function handleMouseEnd(e) {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    flashcard.classList.remove('dragging');
+    
+    const deltaX = e.clientX - touchStartX;
+    handleSwipeEnd(deltaX);
+}
+
+function updateCardPosition(deltaX) {
+    const rotation = deltaX * 0.1;
+    const opacity = Math.max(0.7, 1 - Math.abs(deltaX) / 300);
+    
+    flashcard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+    flashcard.style.opacity = opacity;
+}
+
+function showSwipeIndicators(deltaX) {
+    const threshold = 80;
+    
+    swipeIndicators.forEach(indicator => {
+        indicator.classList.remove('show');
+    });
+    
+    if (Math.abs(deltaX) > threshold) {
+        const direction = deltaX > 0 ? 'right' : 'left';
+        const indicator = document.querySelector(`.swipe-indicator.${direction}`);
+        if (indicator) {
+            indicator.classList.add('show');
+        }
+    }
+}
+
+function handleSwipeEnd(deltaX) {
+    const threshold = 120;
+    
+    // Reset indicadores
+    swipeIndicators.forEach(indicator => {
+        indicator.classList.remove('show');
+    });
+    
+    if (Math.abs(deltaX) > threshold) {
+        // Swipe válido
+        if (swipeActions.style.display === 'flex') {
+            // Se a resposta já foi mostrada, processa o swipe
+            const isCorrect = deltaX > 0;
+            handleAnswer(isCorrect);
+        } else {
+            // Se a resposta não foi mostrada, mostra primeiro
+            showAnswer();
+            resetCardPosition();
+        }
+    } else {
+        // Swipe inválido, volta à posição original
+        resetCardPosition();
+    }
+}
+
+function resetCardPosition() {
+    flashcard.style.transform = '';
+    flashcard.style.opacity = '';
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast show ${type}`;
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+// Atalhos de teclado
+document.addEventListener('keydown', function(e) {
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        if (showAnswerBtn.style.display !== 'none') {
+            showAnswer();
+        }
+    } else if (e.key === 'ArrowRight' && swipeActions.style.display === 'flex') {
+        handleAnswer(true);
+    } else if (e.key === 'ArrowLeft' && swipeActions.style.display === 'flex') {
+        handleAnswer(false);
+    } else if (e.key === 'r' || e.key === 'R') {
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            resetAll();
+        }
+    }
+});
+
+// Adicionar dicas visuais
+document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar tooltip de ajuda
+    setTimeout(() => {
+        if (currentQuestionIndex === 0) {
+            showToast('💡 Dica: Arraste para direita (acertei) ou esquerda (errei), ou use os botões!', 'info');
+        }
+    }, 2000);
+});

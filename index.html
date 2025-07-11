@@ -1,184 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Web Developer</title>
+    <title>AWS CLF-C02 Flashcards - Estudo para Certificação</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Portfolio</h2>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fab fa-aws"></i> AWS CLF-C02 Flashcards</h1>
+                <p>Certificação AWS Cloud Practitioner - Português</p>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#about">About</a></li>
-                <li><a href="#languages">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Hi, I'm a <span class="highlight">Web Developer</span></h1>
-                <p>Creating innovative and efficient web solutions with modern technologies</p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentCard">1</span>
+                    <span class="stat-label">de <span id="totalCards">50</span></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number correct" id="correctCount">0</span>
+                    <span class="stat-label">Acertos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number incorrect" id="incorrectCount">0</span>
+                    <span class="stat-label">Erros</span>
                 </div>
             </div>
-            <div class="hero-image">
-                <div class="profile-placeholder">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-            </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I'm a passionate web developer with expertise in both frontend and backend technologies. I love creating user-friendly applications that solve real-world problems and provide exceptional user experiences.</p>
-                    <p>With a strong foundation in modern web technologies, I continuously learn and adapt to new tools and frameworks to deliver cutting-edge solutions. My approach combines technical expertise with creative problem-solving to build applications that are both functional and beautiful.</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>3+</h3>
-                            <p>Years Experience</p>
+        <main class="main-content">
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard">
+                    <div class="card-content">
+                        <div class="question-section">
+                            <h3>Pergunta</h3>
+                            <p id="question"></p>
                         </div>
-                        <div class="stat">
-                            <h3>20+</h3>
-                            <p>Projects Completed</p>
+                        <div class="options-section" id="optionsSection">
+                            <div class="options" id="options"></div>
                         </div>
-                        <div class="stat">
-                            <h3>7</h3>
-                            <p>Technologies Mastered</p>
+                        <div class="answer-section" id="answerSection" style="display: none;">
+                            <h3>Resposta Correta</h3>
+                            <p id="correctAnswer"></p>
+                            <div class="explanation" id="explanation"></div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-secondary" id="showAnswerBtn">Ver Resposta</button>
+                        <div class="swipe-actions" id="swipeActions" style="display: none;">
+                            <button class="btn btn-incorrect" id="incorrectBtn">
+                                <i class="fas fa-times"></i> Errei
+                            </button>
+                            <button class="btn btn-correct" id="correctBtn">
+                                <i class="fas fa-check"></i> Acertei
+                            </button>
                         </div>
                     </div>
                 </div>
+                
+                <div class="swipe-indicators">
+                    <div class="swipe-indicator left">
+                        <i class="fas fa-times"></i>
+                        <span>Errei</span>
+                    </div>
+                    <div class="swipe-indicator right">
+                        <i class="fas fa-check"></i>
+                        <span>Acertei</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Languages/Skills Section -->
-    <section id="languages" class="languages">
-        <div class="container">
-            <h2 class="section-title">Technologies & Skills</h2>
-            <div class="languages-grid">
-                <div class="language-card" data-tech="angular">
-                    <div class="language-icon">
-                        <i class="fab fa-angular"></i>
+            <div class="completion-screen" id="completionScreen" style="display: none;">
+                <div class="completion-content">
+                    <i class="fas fa-trophy"></i>
+                    <h2>Parabéns!</h2>
+                    <p>Você completou todas as questões!</p>
+                    <div class="final-stats">
+                        <div class="final-stat">
+                            <span class="number correct" id="finalCorrect">0</span>
+                            <span class="label">Acertos</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="number incorrect" id="finalIncorrect">0</span>
+                            <span class="label">Erros</span>
+                        </div>
                     </div>
-                    <h3>Angular</h3>
-                    <p>Frontend Framework</p>
-                </div>
-                <div class="language-card" data-tech="react">
-                    <div class="language-icon">
-                        <i class="fab fa-react"></i>
+                    <div class="completion-actions">
+                        <button class="btn btn-primary" id="reviewIncorrectBtn">
+                            <i class="fas fa-redo"></i> Revisar Incorretas
+                        </button>
+                        <button class="btn btn-secondary" id="restartBtn">
+                            <i class="fas fa-refresh"></i> Começar Novamente
+                        </button>
                     </div>
-                    <h3>React</h3>
-                    <p>JavaScript Library</p>
-                </div>
-                <div class="language-card" data-tech="next">
-                    <div class="language-icon">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                    <h3>Next.js</h3>
-                    <p>React Framework</p>
-                </div>
-                <div class="language-card" data-tech="node">
-                    <div class="language-icon">
-                        <i class="fab fa-node-js"></i>
-                    </div>
-                    <h3>Node.js</h3>
-                    <p>Backend Runtime</p>
-                </div>
-                <div class="language-card" data-tech="java">
-                    <div class="language-icon">
-                        <i class="fab fa-java"></i>
-                    </div>
-                    <h3>Java</h3>
-                    <p>Programming Language</p>
-                </div>
-                <div class="language-card" data-tech="prisma">
-                    <div class="language-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Prisma</h3>
-                    <p>Database ORM</p>
-                </div>
-                <div class="language-card" data-tech="sql">
-                    <div class="language-icon">
-                        <i class="fas fa-table"></i>
-                    </div>
-                    <h3>SQL</h3>
-                    <p>Database Language</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </main>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="projects-grid" id="projectsContainer">
-                <!-- Projects will be loaded here via JavaScript -->
-                <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Loading projects...</p>
-                </div>
-            </div>
+        <div class="controls">
+            <button class="btn btn-outline" id="resetBtn">
+                <i class="fas fa-refresh"></i> Resetar Tudo
+            </button>
+            <button class="btn btn-outline" id="reviewBtn" style="display: none;">
+                <i class="fas fa-redo"></i> Revisar Incorretas
+            </button>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Portfolio</h3>
-                    <p>Creating innovative web solutions</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#languages">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Connect</h3>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Portfolio. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <div class="toast" id="toast"></div>
 
+    <script src="questions.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
