@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Web Developer</title>
+    <title data-i18n="title">Portfolio - Web Developer</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -15,12 +15,24 @@
             <div class="nav-logo">
                 <h2>Portfolio</h2>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#about">About</a></li>
-                <li><a href="#languages">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+            <div class="nav-content">
+                <ul class="nav-menu">
+                    <li><a href="#about" data-i18n="nav.about">About</a></li>
+                    <li><a href="#languages" data-i18n="nav.skills">Skills</a></li>
+                    <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+                    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+                </ul>
+                <div class="controls">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                        <span data-i18n="theme.dark">Dark</span>
+                    </button>
+                    <button class="language-toggle" onclick="toggleLanguage()">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-lang">EN</span>
+                    </button>
+                </div>
+            </div>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -33,11 +45,11 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>Hi, I'm a <span class="highlight">Web Developer</span></h1>
-                <p>Creating innovative and efficient web solutions with modern technologies</p>
+                <h1><span data-i18n="hero.greeting">Hi, I'm a</span> <span class="highlight" data-i18n="hero.title">Web Developer</span></h1>
+                <p data-i18n="hero.description">Creating innovative and efficient web solutions with modern technologies</p>
                 <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
+                    <a href="#projects" class="btn btn-primary" data-i18n="hero.viewWork">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary" data-i18n="hero.getInTouch">Get In Touch</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -51,23 +63,23 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
+            <h2 class="section-title" data-i18n="about.title">About Me</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>I'm a passionate web developer with expertise in both frontend and backend technologies. I love creating user-friendly applications that solve real-world problems and provide exceptional user experiences.</p>
-                    <p>With a strong foundation in modern web technologies, I continuously learn and adapt to new tools and frameworks to deliver cutting-edge solutions. My approach combines technical expertise with creative problem-solving to build applications that are both functional and beautiful.</p>
+                    <p data-i18n="about.description1">I'm a passionate web developer with expertise in both frontend and backend technologies. I love creating user-friendly applications that solve real-world problems and provide exceptional user experiences.</p>
+                    <p data-i18n="about.description2">With a strong foundation in modern web technologies, I continuously learn and adapt to new tools and frameworks to deliver cutting-edge solutions. My approach combines technical expertise with creative problem-solving to build applications that are both functional and beautiful.</p>
                     <div class="about-stats">
                         <div class="stat">
                             <h3>3+</h3>
-                            <p>Years Experience</p>
+                            <p data-i18n="about.experience">Years Experience</p>
                         </div>
                         <div class="stat">
                             <h3>20+</h3>
-                            <p>Projects Completed</p>
+                            <p data-i18n="about.projects">Projects Completed</p>
                         </div>
                         <div class="stat">
                             <h3>7</h3>
-                            <p>Technologies Mastered</p>
+                            <p data-i18n="about.technologies">Technologies Mastered</p>
                         </div>
                     </div>
                 </div>
@@ -78,56 +90,56 @@
     <!-- Languages/Skills Section -->
     <section id="languages" class="languages">
         <div class="container">
-            <h2 class="section-title">Technologies & Skills</h2>
+            <h2 class="section-title" data-i18n="skills.title">Technologies & Skills</h2>
             <div class="languages-grid">
                 <div class="language-card" data-tech="angular">
                     <div class="language-icon">
                         <i class="fab fa-angular"></i>
                     </div>
                     <h3>Angular</h3>
-                    <p>Frontend Framework</p>
+                    <p data-i18n="skills.frontend">Frontend Framework</p>
                 </div>
                 <div class="language-card" data-tech="react">
                     <div class="language-icon">
                         <i class="fab fa-react"></i>
                     </div>
                     <h3>React</h3>
-                    <p>JavaScript Library</p>
+                    <p data-i18n="skills.library">JavaScript Library</p>
                 </div>
                 <div class="language-card" data-tech="next">
                     <div class="language-icon">
                         <i class="fas fa-arrow-right"></i>
                     </div>
                     <h3>Next.js</h3>
-                    <p>React Framework</p>
+                    <p data-i18n="skills.framework">React Framework</p>
                 </div>
                 <div class="language-card" data-tech="node">
                     <div class="language-icon">
                         <i class="fab fa-node-js"></i>
                     </div>
                     <h3>Node.js</h3>
-                    <p>Backend Runtime</p>
+                    <p data-i18n="skills.backend">Backend Runtime</p>
                 </div>
                 <div class="language-card" data-tech="java">
                     <div class="language-icon">
                         <i class="fab fa-java"></i>
                     </div>
                     <h3>Java</h3>
-                    <p>Programming Language</p>
+                    <p data-i18n="skills.programming">Programming Language</p>
                 </div>
                 <div class="language-card" data-tech="prisma">
                     <div class="language-icon">
                         <i class="fas fa-database"></i>
                     </div>
                     <h3>Prisma</h3>
-                    <p>Database ORM</p>
+                    <p data-i18n="skills.database">Database ORM</p>
                 </div>
                 <div class="language-card" data-tech="sql">
                     <div class="language-icon">
                         <i class="fas fa-table"></i>
                     </div>
                     <h3>SQL</h3>
-                    <p>Database Language</p>
+                    <p data-i18n="skills.databaseLang">Database Language</p>
                 </div>
             </div>
         </div>
@@ -136,12 +148,33 @@
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
+            <h2 class="section-title" data-i18n="projects.title">Featured Projects</h2>
             <div class="projects-grid" id="projectsContainer">
-                <!-- Projects will be loaded here via JavaScript -->
                 <div class="loading">
                     <i class="fas fa-spinner fa-spin"></i>
-                    <p>Loading projects...</p>
+                    <p data-i18n="projects.loading">Loading projects...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="about">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact.title">Get In Touch</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p data-i18n="contact.description">I'm always interested in new opportunities and exciting projects. Whether you have a question about my work or want to discuss a potential collaboration, feel free to reach out.</p>
+                    <div class="hero-buttons" style="justify-content: center; margin-top: 2rem;">
+                        <a href="mailto:kaue.bulhoes@gmail.com" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            <span data-i18n="contact.email">Email Me</span>
+                        </a>
+                        <a href="https://wa.me/5584998336552?text=Olá%20Kauê!%20Vi%20seu%20portfólio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." class="btn btn-secondary" target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp"></i>
+                            <span data-i18n="contact.whatsapp">WhatsApp</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,28 +186,27 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Portfolio</h3>
-                    <p>Creating innovative web solutions</p>
+                    <p data-i18n="footer.tagline">Creating innovative web solutions</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
+                    <h3 data-i18n="footer.quickLinks">Quick Links</h3>
                     <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#languages">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#about" data-i18n="nav.about">About</a></li>
+                        <li><a href="#languages" data-i18n="nav.skills">Skills</a></li>
+                        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+                        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Connect</h3>
+                    <h3 data-i18n="footer.connect">Connect</h3>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://github.com/KaueBulhoes" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/kauebulhoes/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Portfolio. All rights reserved.</p>
+                <p>&copy; 2024 Portfolio. <span data-i18n="footer.rights">All rights reserved.</span></p>
             </div>
         </div>
     </footer>

@@ -1,5 +1,205 @@
-// Mobile Navigation
+// Translations
+const translations = {
+    en: {
+        title: "Portfolio - Web Developer",
+        nav: {
+            about: "About",
+            skills: "Skills", 
+            projects: "Projects",
+            contact: "Contact"
+        },
+        theme: {
+            dark: "Dark",
+            light: "Light"
+        },
+        hero: {
+            greeting: "Hi, I'm a",
+            title: "Web Developer",
+            description: "Creating innovative and efficient web solutions with modern technologies",
+            viewWork: "View My Work",
+            getInTouch: "Get In Touch"
+        },
+        about: {
+            title: "About Me",
+            description1: "I'm a passionate web developer with expertise in both frontend and backend technologies. I love creating user-friendly applications that solve real-world problems and provide exceptional user experiences.",
+            description2: "With a strong foundation in modern web technologies, I continuously learn and adapt to new tools and frameworks to deliver cutting-edge solutions. My approach combines technical expertise with creative problem-solving to build applications that are both functional and beautiful.",
+            experience: "Years Experience",
+            projects: "Projects Completed",
+            technologies: "Technologies Mastered"
+        },
+        skills: {
+            title: "Technologies & Skills",
+            frontend: "Frontend Framework",
+            library: "JavaScript Library",
+            framework: "React Framework",
+            backend: "Backend Runtime",
+            programming: "Programming Language",
+            database: "Database ORM",
+            databaseLang: "Database Language"
+        },
+        projects: {
+            title: "Featured Projects",
+            loading: "Loading projects...",
+            viewCode: "View Code",
+            liveDemo: "Live Demo",
+            todoDescription: "A comprehensive todo list application built with Angular featuring task management, categories, due dates, and local storage persistence.",
+            ecommerceDescription: "E-commerce platform for books developed as part of Santander Coders 2023.2 Module 5. Features shopping cart, payment integration, and book catalog management.",
+            efoodDescription: "Modern food delivery application with real-time order tracking, restaurant management, and payment processing. Built with React and Node.js."
+        },
+        contact: {
+            title: "Get In Touch",
+            description: "I'm always interested in new opportunities and exciting projects. Whether you have a question about my work or want to discuss a potential collaboration, feel free to reach out.",
+            email: "Email Me",
+            whatsapp: "WhatsApp"
+        },
+        footer: {
+            tagline: "Creating innovative web solutions",
+            quickLinks: "Quick Links",
+            connect: "Connect",
+            rights: "All rights reserved."
+        }
+    },
+    pt: {
+        title: "Portfólio - Desenvolvedor Web",
+        nav: {
+            about: "Sobre",
+            skills: "Habilidades",
+            projects: "Projetos", 
+            contact: "Contato"
+        },
+        theme: {
+            dark: "Escuro",
+            light: "Claro"
+        },
+        hero: {
+            greeting: "Olá, eu sou um",
+            title: "Desenvolvedor Web",
+            description: "Criando soluções web inovadoras e eficientes com tecnologias modernas",
+            viewWork: "Ver Meu Trabalho",
+            getInTouch: "Entre em Contato"
+        },
+        about: {
+            title: "Sobre Mim",
+            description1: "Sou um desenvolvedor web apaixonado com expertise em tecnologias frontend e backend. Adoro criar aplicações user-friendly que resolvem problemas do mundo real e proporcionam experiências excepcionais ao usuário.",
+            description2: "Com uma base sólida em tecnologias web modernas, aprendo continuamente e me adapto a novas ferramentas e frameworks para entregar soluções de ponta. Minha abordagem combina expertise técnica com resolução criativa de problemas para construir aplicações funcionais e bonitas.",
+            experience: "Anos de Experiência",
+            projects: "Projetos Concluídos",
+            technologies: "Tecnologias Dominadas"
+        },
+        skills: {
+            title: "Tecnologias e Habilidades",
+            frontend: "Framework Frontend",
+            library: "Biblioteca JavaScript",
+            framework: "Framework React",
+            backend: "Runtime Backend",
+            programming: "Linguagem de Programação",
+            database: "ORM de Banco de Dados",
+            databaseLang: "Linguagem de Banco"
+        },
+        projects: {
+            title: "Projetos em Destaque",
+            loading: "Carregando projetos...",
+            viewCode: "Ver Código",
+            liveDemo: "Demo ao Vivo",
+            todoDescription: "Uma aplicação abrangente de lista de tarefas construída com Angular, com gerenciamento de tarefas, categorias, datas de vencimento e persistência de armazenamento local.",
+            ecommerceDescription: "Plataforma de e-commerce para livros desenvolvida como parte do Santander Coders 2023.2 Módulo 5. Possui carrinho de compras, integração de pagamento e gerenciamento de catálogo de livros.",
+            efoodDescription: "Aplicação moderna de entrega de comida com rastreamento de pedidos em tempo real, gerenciamento de restaurantes e processamento de pagamentos. Construída com React e Node.js."
+        },
+        contact: {
+            title: "Entre em Contato",
+            description: "Estou sempre interessado em novas oportunidades e projetos empolgantes. Se você tem uma pergunta sobre meu trabalho ou quer discutir uma colaboração potencial, sinta-se à vontade para entrar em contato.",
+            email: "Me Envie um Email",
+            whatsapp: "WhatsApp"
+        },
+        footer: {
+            tagline: "Criando soluções web inovadoras",
+            quickLinks: "Links Rápidos",
+            connect: "Conectar",
+            rights: "Todos os direitos reservados."
+        }
+    }
+};
+
+// Current language and theme
+let currentLang = localStorage.getItem('portfolio-lang') || 'en';
+let currentTheme = localStorage.getItem('portfolio-theme') || 'light';
+
+// Initialize theme and language
 document.addEventListener('DOMContentLoaded', function() {
+    // Set theme
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeIcon();
+    
+    // Set language
+    updateLanguage();
+    updateLanguageDisplay();
+    
+    // Initialize other functionality
+    initializeNavigation();
+    loadGitHubProjects();
+    initializeAnimations();
+});
+
+// Theme toggle functionality
+function toggleTheme() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    localStorage.setItem('portfolio-theme', currentTheme);
+    updateThemeIcon();
+}
+
+function updateThemeIcon() {
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.querySelector('.theme-toggle span');
+    
+    if (currentTheme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = translations[currentLang].theme.light;
+    } else {
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = translations[currentLang].theme.dark;
+    }
+}
+
+// Language toggle functionality
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'pt' : 'en';
+    localStorage.setItem('portfolio-lang', currentLang);
+    updateLanguage();
+    updateLanguageDisplay();
+    updateThemeIcon(); // Update theme text in new language
+    
+    // Reload projects with new language
+    loadGitHubProjects();
+}
+
+function updateLanguageDisplay() {
+    document.getElementById('current-lang').textContent = currentLang.toUpperCase();
+}
+
+function updateLanguage() {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = getNestedTranslation(translations[currentLang], key);
+        if (translation) {
+            element.textContent = translation;
+        }
+    });
+    
+    // Update document title
+    document.title = translations[currentLang].title;
+    
+    // Update HTML lang attribute
+    document.documentElement.lang = currentLang === 'pt' ? 'pt-BR' : 'en';
+}
+
+function getNestedTranslation(obj, path) {
+    return path.split('.').reduce((current, key) => current && current[key], obj);
+}
+
+// Navigation functionality
+function initializeNavigation() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -30,49 +230,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Load GitHub projects
-    loadGitHubProjects();
-
-    // Language card animations
-    const languageCards = document.querySelectorAll('.language-card');
-    languageCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.style.background = currentTheme === 'dark' 
+                ? 'rgba(17, 24, 39, 0.98)' 
+                : 'rgba(255, 255, 255, 0.98)';
+        } else {
+            navbar.style.background = currentTheme === 'dark' 
+                ? 'rgba(17, 24, 39, 0.95)' 
+                : 'rgba(255, 255, 255, 0.95)';
+        }
     });
-});
+}
 
-// GitHub API Integration
+// Projects functionality
 async function loadGitHubProjects() {
     const projectsContainer = document.getElementById('projectsContainer');
-    const projectNames = ['Angular_ToDoList', 'books-ecommerce-SantanderCoders2023.2-Modulo5', 'efood2'];
     
     try {
         // Clear loading state
         projectsContainer.innerHTML = '';
         
-        // Show loading for each project
+        // Show loading
         projectsContainer.innerHTML = `
             <div class="loading">
                 <i class="fas fa-spinner fa-spin"></i>
-                <p>Loading projects from GitHub...</p>
+                <p data-i18n="projects.loading">${translations[currentLang].projects.loading}</p>
             </div>
         `;
 
-        const projects = [];
-        
-        // Since we don't have the GitHub username, we'll create demo projects based on the names
-        // In a real scenario, you would replace 'your-username' with the actual GitHub username
-        // and make actual API calls to https://api.github.com/repos/your-username/repo-name
-        
         const demoProjects = [
             {
                 name: 'Angular_ToDoList',
-                description: 'A comprehensive todo list application built with Angular featuring task management, categories, due dates, and local storage persistence.',
+                description: translations[currentLang].projects.todoDescription,
                 language: 'TypeScript',
                 stars: 15,
                 forks: 5,
@@ -82,7 +274,7 @@ async function loadGitHubProjects() {
             },
             {
                 name: 'books-ecommerce-SantanderCoders2023.2-Modulo5',
-                description: 'E-commerce platform for books developed as part of Santander Coders 2023.2 Module 5. Features shopping cart, payment integration, and book catalog management.',
+                description: translations[currentLang].projects.ecommerceDescription,
                 language: 'JavaScript',
                 stars: 23,
                 forks: 8,
@@ -92,7 +284,7 @@ async function loadGitHubProjects() {
             },
             {
                 name: 'efood2',
-                description: 'Modern food delivery application with real-time order tracking, restaurant management, and payment processing. Built with React and Node.js.',
+                description: translations[currentLang].projects.efoodDescription,
                 language: 'JavaScript',
                 stars: 31,
                 forks: 12,
@@ -173,12 +365,12 @@ function createProjectCard(project) {
             <div class="project-links">
                 <a href="${project.html_url}" target="_blank" rel="noopener" class="project-link">
                     <i class="fab fa-github"></i>
-                    View Code
+                    ${translations[currentLang].projects.viewCode}
                 </a>
                 ${project.homepage ? `
                     <a href="${project.homepage}" target="_blank" rel="noopener" class="project-link">
                         <i class="fas fa-external-link-alt"></i>
-                        Live Demo
+                        ${translations[currentLang].projects.liveDemo}
                     </a>
                 ` : ''}
             </div>
@@ -204,35 +396,36 @@ function getLanguageColor(language) {
     return colors[language] || '#6366f1';
 }
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 30px rgba(0, 0, 0, 0.15)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    }
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
+// Animation functionality
+function initializeAnimations() {
+    // Language card animations
+    const languageCards = document.querySelectorAll('.language-card');
+    languageCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
     });
-}, observerOptions);
 
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
     const animateElements = document.querySelectorAll('.language-card, .stat, .about-text');
     animateElements.forEach(el => {
         el.style.opacity = '0';
@@ -240,58 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'all 0.6s ease';
         observer.observe(el);
     });
-});
-
-// Contact form handling (for contact page)
-function handleContactForm() {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Simulate form submission
-            setTimeout(() => {
-                alert('Thank you for your message! I\'ll get back to you soon.');
-                this.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-    }
 }
 
 // Initialize contact form if on contact page
 document.addEventListener('DOMContentLoaded', handleContactForm);
-
-// Add CSS for project topics
-const style = document.createElement('style');
-style.textContent = `
-    .project-topics {
-        margin: 1rem 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
-    .project-topic {
-        background: #e5e7eb;
-        color: #374151;
-        padding: 0.25rem 0.5rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-    
-    .language-card:hover {
-        transform: translateY(-10px) scale(1.02) !important;
-    }
-`;
-document.head.appendChild(style);
